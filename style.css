@@ -1,0 +1,110 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  width: 20rem;
+  height: 34rem;
+  border: 2px solid black;
+  padding: 1rem;
+  border-radius: 0.8rem;
+  background-color: rgb(70, 167, 197);
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+input {
+  width: 80%;
+  height: 2.5rem;
+  border-radius: 1rem;
+  padding-left: 0.5rem;
+  border: none;
+  outline: none;
+}
+
+input:hover {
+  border: 2px solid black;
+}
+
+#search {
+  border: 3px solid rgb(42, 30, 30);
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.centre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#degree {
+  margin-top: 1rem;
+  font-size: 3rem;
+}
+
+#city {
+  margin-top: 1rem;
+  font-size: 2rem;
+}
+
+.icon {
+  display: flex;
+  font-size: 2rem;
+  margin-top: 4rem;
+  justify-content: space-between;
+}
+
+#water, #wind {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#para1, #para2 {
+  font-size: 1.5rem;
+}
+
+.names {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.cloud {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* FIX: fixed box height */
+  height: 180px;
+  width: 100%;
+
+  overflow: hidden; /* important: bahar nahi jayegi image */
+  margin-top: 0.5rem;
+}
+
+.cloud img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain; /* image shrink ho jaye gi but crop nahi hogi */
+}
