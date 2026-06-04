@@ -112,13 +112,7 @@ body {
 }
 
 .icon-area i {
-  filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.35));
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.22));
 }
 
 .weather-info {
@@ -153,15 +147,16 @@ body {
   font-weight: 400;
 }
 
+/* Updated to 2x2 Grid Layout for 4 parameters */
 .stats {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   position: relative;
   z-index: 1;
 }
 
 .stat-box {
-  flex: 1;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
@@ -179,7 +174,7 @@ body {
 
 .stat-box span {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(15px, 4vw, 18px);
+  font-size: clamp(14px, 4vw, 17px);
   font-weight: 500;
   color: #f1f5f9;
 }

@@ -5,13 +5,13 @@ const iconMapping = {
     "Cloudy": "fa-cloud",
     "Overcast": "fa-cloud",
     "Mist": "fa-smog",
-    "Patchy rain possible": "fa-cloud-sun-rain",
+    "Fog": "fa-smog",
+    "Haze": "fa-smog",
+    "Rain": "fa-cloud-showers-heavy",
     "Light rain": "fa-cloud-showers-heavy",
     "Heavy rain": "fa-cloud-showers-heavy",
-    "Moderate rain": "fa-cloud-showers-heavy",
     "Snow": "fa-snowflake",
-    "Patchy snow possible": "fa-snowflake",
-    "Thundery outbreaks possible": "fa-cloud-bolt"
+    "Thunderstorm": "fa-cloud-bolt"
 };
 
 function getFontAwesomeIcon(conditionText) {
@@ -20,17 +20,20 @@ function getFontAwesomeIcon(conditionText) {
         return `<i class="fa-solid ${iconMapping[text]}" style="font-size: 80px; color: #38bdf8;"></i>`;
     }
     
-    if (text.toLowerCase().includes("rain") || text.toLowerCase().includes("drizzle")) {
+    if (text.toLowerCase().includes("rain") || text.toLowerCase().includes("drizzle") || text.toLowerCase().includes("shower")) {
         return `<i class="fa-solid fa-cloud-showers-heavy" style="font-size: 80px; color: #38bdf8;"></i>`;
     }
-    if (text.toLowerCase().includes("snow") || text.toLowerCase().includes("ice")) {
+    if (text.toLowerCase().includes("snow") || text.toLowerCase().includes("ice") || text.toLowerCase().includes("sleet")) {
         return `<i class="fa-solid fa-snowflake" style="font-size: 80px; color: #38bdf8;"></i>`;
     }
-    if (text.toLowerCase().includes("cloud")) {
+    if (text.toLowerCase().includes("cloud") || text.toLowerCase().includes("overcast")) {
         return `<i class="fa-solid fa-cloud" style="font-size: 80px; color: #38bdf8;"></i>`;
     }
     if (text.toLowerCase().includes("thunder")) {
         return `<i class="fa-solid fa-cloud-bolt" style="font-size: 80px; color: #38bdf8;"></i>`;
+    }
+    if (text.toLowerCase().includes("haze") || text.toLowerCase().includes("mist")) {
+        return `<i class="fa-solid fa-smog" style="font-size: 80px; color: #38bdf8;"></i>`;
     }
 
     return `<i class="fa-solid fa-cloud-sun" style="font-size: 80px; color: #38bdf8;"></i>`;
@@ -42,30 +45,37 @@ async function doSearch() {
     
     if (!cityInput) return;
 
-    const apiKey = "b1207604f37841db896131341232810"; 
-    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(cityInput)}&aqi=no`;
+    const url = `https://wttr.in/${encodeURIComponent(cityInput)}?format=j1`;
 
     try {
         const response = await fetch(url);
         if (!response.ok) throw new Error("City not found");
         
         const data = await response.json();
+        const currentCondition = data.current_condition[0];
 
         errEl.style.display = "none";
-        document.getElementById("degree").textContent = Math.round(data.current.temp_c) + "°C";
-        document.getElementById("city").textContent = `${data.location.name}, ${data.location.country}`;
-        document.getElementById("condition").textContent = data.current.condition.text;
-        document.getElementById("humidity").textContent = data.current.humidity + "%";
-        document.getElementById("wind-speed").textContent = data.current.wind_kph + " km/h";
-        document.getElementById("icon-area").innerHTML = getFontAwesomeIcon(data.current.condition.text);
+        document.getElementById("degree").textContent = currentCondition.temp_C + "°C";
+        document.getElementById("city").textContent = cityInput.charAt(0).toUpperCase() + cityInput.slice(1);
+        document.getElementById("condition").textContent = currentCondition.weatherDesc[0].value;
+        
+        // Mapping fields directly from the verified JSON response
+        document.getElementById("feels-like").textContent = currentCondition.FeelsLikeC + "°C";
+        document.getElementById("humidity").textContent = currentCondition.humidity + "%";
+        document.getElementById("wind-speed").textContent = currentCondition.windspeedKmph + " km/h";
+        document.getElementById("uv-index").textContent = currentCondition.uvIndex;
+        
+        document.getElementById("icon-area").innerHTML = getFontAwesomeIcon(currentCondition.weatherDesc[0].value);
 
     } catch (error) {
         errEl.style.display = "block";
         document.getElementById("degree").textContent = "—";
         document.getElementById("city").textContent = "City not found";
         document.getElementById("condition").textContent = "try again";
+        document.getElementById("feels-like").textContent = "—";
         document.getElementById("humidity").textContent = "—";
         document.getElementById("wind-speed").textContent = "—";
+        document.getElementById("uv-index").textContent = "—";
         document.getElementById("icon-area").innerHTML = `<i class="fa-solid fa-circle-exclamation" style="font-size: 80px; color: #f87171;"></i>`;
     }
 }
