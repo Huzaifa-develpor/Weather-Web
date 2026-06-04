@@ -3,46 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weather Project</title>
+  <title>Weather App</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 </head>
-
 <body>
-  <div class="container">
 
-    <div class="head">
-      <input type="text" placeholder="Enter City Name" />
-      <div id="search">
+  <div class="card">
+
+    <div class="search-bar">
+      <input type="text" id="city-input" placeholder="Search city…" />
+      <button id="search-btn" aria-label="Search">
         <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+    </div>
+
+    <div class="icon-area" id="icon-area"></div>
+
+    <div class="weather-info">
+      <p id="degree">—</p>
+      <p id="city">Search a city</p>
+      <p id="condition">weather app</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat-box">
+        <i class="fa-solid fa-droplet"></i>
+        <span id="humidity">—</span>
+        <small>Humidity</small>
       </div>
-    </div>
-
-    <div class="cloud">
-      <img id="image" src="Partly_cloudly.png" />
-    </div>
-
-    <div class="centre">
-      <p id="degree">What's</p>
-      <p id="city">Weather Today</p>
-    </div>
-
-    <div class="icon">
-      <div id="water">
-        <i class="fa-solid fa-water"></i>
-        <p id="para1">0%</p>
-      </div>
-
-      <div id="wind">
+      <div class="stat-box">
         <i class="fa-solid fa-wind"></i>
-        <p id="para2">0.0 Km/h</p>
+        <span id="wind-speed">—</span>
+        <small>Wind</small>
       </div>
     </div>
 
-    <div class="names">
-      <p>Humidity</p>
-      <p>Wind Speed</p>
-    </div>
+    <p class="error-msg" id="error-msg">City not found. Try another name.</p>
 
   </div>
 

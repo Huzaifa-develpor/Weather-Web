@@ -1,103 +1,80 @@
-/* -----------------------------
-   DOM ELEMENTS
-------------------------------*/
-const search = document.querySelector(".head input");
-const btn = document.querySelector("#search");
-
-const degree = document.querySelector("#degree");
-const city = document.querySelector("#city");
-const para1 = document.querySelector("#para1");
-const para2 = document.querySelector("#para2");
-const image = document.querySelector("#image");
-
-/* -----------------------------
-   MOCK WEATHER DATABASE
-------------------------------*/
-const weatherData = {
-  karachi: { location: "Karachi", temp: 32, humidity: 70, wind: 18, condition: "Sunny" },
-  lahore: { location: "Lahore", temp: 28, humidity: 65, wind: 12, condition: "Partly cloudy" },
-  islamabad: { location: "Islamabad", temp: 22, humidity: 55, wind: 10, condition: "Rain" },
-  peshawar: { location: "Peshawar", temp: 30, humidity: 60, wind: 14, condition: "Sunny" },
-  quetta: { location: "Quetta", temp: 18, humidity: 40, wind: 20, condition: "Snow" },
-
-  multan: { location: "Multan", temp: 34, humidity: 58, wind: 16, condition: "Sunny" },
-  faisalabad: { location: "Faisalabad", temp: 31, humidity: 62, wind: 13, condition: "Clear" },
-  rawalpindi: { location: "Rawalpindi", temp: 26, humidity: 68, wind: 11, condition: "Rain" },
-  sialkot: { location: "Sialkot", temp: 29, humidity: 60, wind: 10, condition: "Cloudy" },
-  gujranwala: { location: "Gujranwala", temp: 30, humidity: 63, wind: 12, condition: "Sunny" },
-
-  hyderabad: { location: "Hyderabad", temp: 33, humidity: 72, wind: 17, condition: "Sunny" },
-  sukkur: { location: "Sukkur", temp: 36, humidity: 55, wind: 15, condition: "Hot" },
-  larkana: { location: "Larkana", temp: 35, humidity: 57, wind: 14, condition: "Sunny" },
-
-  gwadar: { location: "Gwadar", temp: 29, humidity: 80, wind: 25, condition: "Windy" },
-  muzaffarabad: { location: "Muzaffarabad", temp: 20, humidity: 75, wind: 9, condition: "Rain" },
-
-  delhi: { location: "Delhi", temp: 34, humidity: 60, wind: 13, condition: "Hot" },
-  mumbai: { location: "Mumbai", temp: 31, humidity: 78, wind: 20, condition: "Rain" },
-  kolkata: { location: "Kolkata", temp: 33, humidity: 70, wind: 15, condition: "Cloudy" },
-  chennai: { location: "Chennai", temp: 32, humidity: 75, wind: 18, condition: "Sunny" },
-  bangalore: { location: "Bangalore", temp: 27, humidity: 65, wind: 12, condition: "Pleasant" },
-
-  newyork: { location: "New York", temp: 15, humidity: 55, wind: 22, condition: "Snow" },
-  london: { location: "London", temp: 12, humidity: 80, wind: 25, condition: "Rain" },
-  paris: { location: "Paris", temp: 18, humidity: 70, wind: 14, condition: "Cloudy" },
-  dubai: { location: "Dubai", temp: 38, humidity: 40, wind: 10, condition: "Hot" },
-  istanbul: { location: "Istanbul", temp: 20, humidity: 65, wind: 16, condition: "Windy" },
-
-  tokyo: { location: "Tokyo", temp: 24, humidity: 60, wind: 12, condition: "Cloudy" },
-  seoul: { location: "Seoul", temp: 22, humidity: 58, wind: 11, condition: "Clear" },
-  beijing: { location: "Beijing", temp: 26, humidity: 50, wind: 18, condition: "Sunny" },
-  moscow: { location: "Moscow", temp: 5, humidity: 75, wind: 30, condition: "Snow" },
-
-  sydney: { location: "Sydney", temp: 20, humidity: 65, wind: 18, condition: "Sunny" },
-  toronto: { location: "Toronto", temp: 10, humidity: 60, wind: 20, condition: "Snow" },
-
-  default: { location: "Unknown", temp: 25, humidity: 50, wind: 8, condition: "Clear" }
+const iconMapping = {
+    "Sunny": "fa-sun",
+    "Clear": "fa-moon",
+    "Partly cloudy": "fa-cloud-sun",
+    "Cloudy": "fa-cloud",
+    "Overcast": "fa-cloud",
+    "Mist": "fa-smog",
+    "Patchy rain possible": "fa-cloud-sun-rain",
+    "Light rain": "fa-cloud-showers-heavy",
+    "Heavy rain": "fa-cloud-showers-heavy",
+    "Moderate rain": "fa-cloud-showers-heavy",
+    "Snow": "fa-snowflake",
+    "Patchy snow possible": "fa-snowflake",
+    "Thundery outbreaks possible": "fa-cloud-bolt"
 };
 
-/* -----------------------------
-   UPDATE UI
-------------------------------*/
-function changeCity(locationName, temp, humidity, wind) {
-  city.innerText = locationName;
-  degree.innerText = temp + "°C";
-  para1.innerText = humidity + "%";
-  para2.innerText = wind + " Km/h";
+function getFontAwesomeIcon(conditionText) {
+    const text = conditionText.trim();
+    if (iconMapping[text]) {
+        return `<i class="fa-solid ${iconMapping[text]}" style="font-size: 80px; color: #38bdf8;"></i>`;
+    }
+    
+    if (text.toLowerCase().includes("rain") || text.toLowerCase().includes("drizzle")) {
+        return `<i class="fa-solid fa-cloud-showers-heavy" style="font-size: 80px; color: #38bdf8;"></i>`;
+    }
+    if (text.toLowerCase().includes("snow") || text.toLowerCase().includes("ice")) {
+        return `<i class="fa-solid fa-snowflake" style="font-size: 80px; color: #38bdf8;"></i>`;
+    }
+    if (text.toLowerCase().includes("cloud")) {
+        return `<i class="fa-solid fa-cloud" style="font-size: 80px; color: #38bdf8;"></i>`;
+    }
+    if (text.toLowerCase().includes("thunder")) {
+        return `<i class="fa-solid fa-cloud-bolt" style="font-size: 80px; color: #38bdf8;"></i>`;
+    }
+
+    return `<i class="fa-solid fa-cloud-sun" style="font-size: 80px; color: #38bdf8;"></i>`;
 }
 
-/* -----------------------------
-   WEATHER ICON LOGIC
-------------------------------*/
-function changeLogo(weather) {
-  if (weather === "Sunny" || weather === "Clear") {
-    image.src = "sunny.png";
-  } 
-  else if (weather === "Partly cloudy" || weather === "Overcast" || weather === "Cloudy") {
-    image.src = "Partly_cloudy.png";
-  } 
-  else if (weather === "Rain" || weather === "Mist") {
-    image.src = "rainy.jpeg";
-  } 
-  else {
-    image.src = "snow.png";
-  }
+async function doSearch() {
+    const cityInput = document.getElementById("city-input").value.trim();
+    const errEl = document.getElementById("error-msg");
+    
+    if (!cityInput) return;
+
+    const apiKey = "b1207604f37841db896131341232810"; 
+    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(cityInput)}&aqi=no`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("City not found");
+        
+        const data = await response.json();
+
+        errEl.style.display = "none";
+        document.getElementById("degree").textContent = Math.round(data.current.temp_c) + "°C";
+        document.getElementById("city").textContent = `${data.location.name}, ${data.location.country}`;
+        document.getElementById("condition").textContent = data.current.condition.text;
+        document.getElementById("humidity").textContent = data.current.humidity + "%";
+        document.getElementById("wind-speed").textContent = data.current.wind_kph + " km/h";
+        document.getElementById("icon-area").innerHTML = getFontAwesomeIcon(data.current.condition.text);
+
+    } catch (error) {
+        errEl.style.display = "block";
+        document.getElementById("degree").textContent = "—";
+        document.getElementById("city").textContent = "City not found";
+        document.getElementById("condition").textContent = "try again";
+        document.getElementById("humidity").textContent = "—";
+        document.getElementById("wind-speed").textContent = "—";
+        document.getElementById("icon-area").innerHTML = `<i class="fa-solid fa-circle-exclamation" style="font-size: 80px; color: #f87171;"></i>`;
+    }
 }
 
-/* -----------------------------
-   SEARCH HANDLER
-------------------------------*/
-btn.addEventListener("click", () => {
-  const input = search.value.toLowerCase().trim();
+document.getElementById("search-btn").addEventListener("click", doSearch);
+document.getElementById("city-input").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") doSearch();
+});
 
-  const data = weatherData[input] || weatherData.default;
-
-  changeCity(
-    data.location,
-    data.temp,
-    data.humidity,
-    data.wind
-  );
-
-  changeLogo(data.condition);
+window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("icon-area").innerHTML = `<i class="fa-solid fa-cloud-sun" style="font-size: 80px; color: #38bdf8;"></i>`;
 });
